@@ -3,6 +3,7 @@ import React,{Component} from "react";
 import Cards from '../Components/Cards';
 import SearchBar from '../Components/SearchBar';
 import Scroll from '../Components/Scroll';
+import ErrorBoundry from '../Components/ErrorBoundry';
 
 import './app.css';
 
@@ -32,16 +33,16 @@ class App extends Component{
         const robotsfiltred = robots.filter(robot => {
             return robot.name.toLocaleLowerCase().includes(searchfield);
         });
-        if(!robots.length)
-        {
-            return <h1 className="tc">Laoding ...</h1>
-        }        
-        return(
+        return !robots.length ?
+         <h1 className="tc">Laoding ...</h1> :              
+        (
             <div className="tc">
                 <h1 className="f1">mr robot</h1>
                 <SearchBar onChange = {this.onSearchChange}/>
                 <Scroll>
-                    <Cards  robots = {robotsfiltred}/>
+                    <ErrorBoundry>
+                        <Cards  robots = {robotsfiltred}/>
+                    </ErrorBoundry>                        
                 </Scroll>
             </div>
         )
